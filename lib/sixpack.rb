@@ -36,6 +36,8 @@ module Sixpack
       @base_url = options[:base_url]
       @user = options[:user]
       @password = options[:password]
+      @open_timeout = options[:open_timeout] || 1.0
+      @read_timeout = options[:read_timeout] || 1.0
 
       default_params = {:ip_address => nil, :user_agent => :nil}
       params = default_params.merge(params)
@@ -116,8 +118,8 @@ module Sixpack
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       end
 
-      http.open_timeout = 1.0
-      http.read_timeout = 1.0
+      http.open_timeout = @open_timeout
+      http.read_timeout = @read_timeout
       query = Addressable::URI.form_encode(self.build_params(params))
 
       begin
